@@ -1,17 +1,12 @@
 /** @format */
-
-import Point from "./point"
-
 class Field {
   constructor(canvas) {
     this.canvas = canvas
     this.ctx = canvas.getContext("2d")
     this.ducks = []
-
-    this.#generateDucks()
   }
 
-  #generateDucks() {
+  generateDucks() {
     console.log(this.canvas.width, this.canvas.height)
   }
 
