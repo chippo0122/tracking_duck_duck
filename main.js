@@ -5,8 +5,8 @@ import "./assets/styles/style.scss"
 const main = () => {
   const CANVAS = document.getElementById("CANVAS")
 
-  CANVAS.width = window.innerWidth - 100
-  CANVAS.height = window.innerHeight - 100
+  CANVAS.width = window.innerWidth - 30
+  CANVAS.height = window.innerHeight - 30
 
   const field = new Field(CANVAS)
 

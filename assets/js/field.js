@@ -1,4 +1,6 @@
 /** @format */
+import Hut from "./hut"
+import Duck from "./duck"
 import Point from "./point"
 import { distance } from "./util"
 class Field {
@@ -7,6 +9,7 @@ class Field {
     this.canvas = canvas
     this.ctx = canvas.getContext("2d")
     this.ducks = []
+    this.hut = null
 
     // process
     this.isStart = false
@@ -24,10 +27,8 @@ class Field {
   }
 
   generateDucks() {
-    const arr = Array.from(Array(10)).map(() => {
-      const x = Math.random() * this.canvas.width
-      const y = Math.random() * this.canvas.height
-      return new Point(x, y)
+    const arr = Array.from(Array(1)).map(() => {
+      return new Duck(new Point(this.canvas.width / 2, this.canvas.height / 2))
     })
 
     this.ducks = arr
@@ -39,8 +40,9 @@ class Field {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     if (this.ducks.length < 1) return
 
-    this.ducks.forEach((el) => {
-      el.draw(this.ctx)
+    this.ducks.forEach((duck) => {
+      duck.workAround(this.canvas.width, this.canvas.height)
+      duck.draw(this.ctx)
     })
   }
 
@@ -55,7 +57,7 @@ class Field {
     const threshold = 30
 
     this.ducks.forEach((el) => {
-      const dis = distance(el, current)
+      const dis = distance(el.center, current)
       if (dis < minDis && dis < threshold) {
         minDis = dis
         nearset = el
@@ -64,6 +66,7 @@ class Field {
 
     if (nearset) {
       this.selected = nearset
+      this.selected.pick()
       return
     }
 
@@ -77,11 +80,15 @@ class Field {
     const y = e.type === "touchmove" ? e.touches[0].clientY : e.offsetY
 
     if (this.drag) {
-      this.selected.move(x, y)
+      this.selected.center.move(x, y)
     }
   }
 
   #handlePressUp() {
+    if (this.selected) {
+      this.selected.release()
+    }
+
     this.drag = false
     this.selected = null
   }
