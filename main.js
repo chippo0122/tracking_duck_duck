@@ -14,6 +14,7 @@ const main = () => {
 
   generateBtn.addEventListener("click", () => {
     field.generateDucks()
+    field.draw()
   })
 
   // const animate = () => {
