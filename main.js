@@ -13,16 +13,16 @@ const main = () => {
   const generateBtn = document.querySelector(".generate-duck")
 
   generateBtn.addEventListener("click", () => {
-    field.generateDucks()
-    field.draw()
+    field.start()
+    animate()
   })
 
-  // const animate = () => {
-  //   field.draw()
-  //   requestAnimationFrame(animate)
-  // }
+  const animate = () => {
+    field.draw()
+    requestAnimationFrame(animate)
+  }
 
-  // animate()
+  animate()
 }
 
 window.onload = main
