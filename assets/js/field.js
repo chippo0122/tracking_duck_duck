@@ -27,7 +27,7 @@ class Field {
   }
 
   generateDucks() {
-    const arr = Array.from(Array(1)).map(() => {
+    const arr = Array.from(Array(10)).map(() => {
       return new Duck(new Point(this.canvas.width / 2, this.canvas.height / 2))
     })
 
@@ -41,7 +41,7 @@ class Field {
     if (this.ducks.length < 1) return
 
     this.ducks.forEach((duck) => {
-      // duck.workAround(this.canvas.width, this.canvas.height)
+      duck.workAround(this.canvas.width, this.canvas.height)
       duck.draw(this.ctx)
     })
   }
@@ -54,7 +54,7 @@ class Field {
 
     let minDis = Number.MAX_SAFE_INTEGER
     let nearset = null
-    const threshold = 30
+    const threshold = this.ducks[0].size
 
     this.ducks.forEach((el) => {
       const dis = distance(el.center, current)

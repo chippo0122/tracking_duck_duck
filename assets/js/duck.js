@@ -3,7 +3,7 @@
 class Duck {
   constructor(point) {
     this.center = point
-    this.size = 120
+    this.size = 60
     // workaround
     this.speed = 1
     this.directionX = 0
@@ -15,7 +15,73 @@ class Duck {
   }
 
   draw(ctx) {
+    if (this.isCatch) {
+      this.drawCatchingDuck(ctx)
+      return
+    }
     this.drawNormalDuck(ctx)
+  }
+
+  drawCatchingDuck(ctx) {
+    const startX = this.center.x - this.size / 2
+    const startY = this.center.y - this.size / 2
+    const splitSec = this.size / 8
+
+    ctx.beginPath()
+    ctx.fillStyle = "white"
+    //頭
+    ctx.rect(startX + splitSec * 3, startY, splitSec * 2, splitSec * 3)
+    //脖子
+    ctx.rect(
+      startX + splitSec * 2,
+      startY + splitSec * 3,
+      splitSec * 4,
+      splitSec
+    )
+    ctx.rect(startX + splitSec, startY + splitSec * 4, splitSec * 6, splitSec)
+    //身體
+    ctx.rect(startX, startY + splitSec * 5, this.size, splitSec * 2)
+    //屁股
+    ctx.rect(startX + splitSec, startY + splitSec * 7, splitSec * 6, splitSec)
+    ctx.fill()
+
+    //眼睛
+    ctx.beginPath()
+    ctx.fillStyle = "black"
+    ctx.rect(
+      startX + splitSec * 3.25,
+      startY + splitSec * 1,
+      splitSec / 2,
+      splitSec / 2
+    )
+    ctx.rect(
+      startX + splitSec * 4.25,
+      startY + splitSec * 1,
+      splitSec / 2,
+      splitSec / 2
+    )
+    ctx.fill()
+
+    //嘴
+    ctx.beginPath()
+    ctx.fillStyle = "orange"
+    ctx.rect(
+      startX + splitSec * 2.5,
+      startY + splitSec * 2,
+      splitSec,
+      splitSec / 4
+    )
+    ctx.fill()
+
+    //腳
+    ctx.beginPath()
+    ctx.strokeStyle = "orange"
+    ctx.lineWidth = 4
+    ctx.moveTo(startX + splitSec * 3.5, startY + this.size)
+    ctx.lineTo(startX + splitSec * 3.5, startY + this.size + splitSec * 1.5)
+    ctx.moveTo(startX + splitSec * 4.5, startY + this.size)
+    ctx.lineTo(startX + splitSec * 4.5, startY + this.size + splitSec * 1.5)
+    ctx.stroke()
   }
 
   drawHead(ctx) {
