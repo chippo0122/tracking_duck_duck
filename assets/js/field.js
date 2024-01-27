@@ -41,7 +41,7 @@ class Field {
     if (this.ducks.length < 1) return
 
     this.ducks.forEach((duck) => {
-      duck.workAround(this.canvas.width, this.canvas.height)
+      // duck.workAround(this.canvas.width, this.canvas.height)
       duck.draw(this.ctx)
     })
   }

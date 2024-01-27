@@ -3,7 +3,7 @@
 class Duck {
   constructor(point) {
     this.center = point
-    this.size = 60
+    this.size = 120
     // workaround
     this.speed = 1
     this.directionX = 0
@@ -24,58 +24,84 @@ class Duck {
 
     const splitSec = this.size / 4
 
+    // 頭
     ctx.fillStyle = "white"
-    ctx.beginPath()
-    ctx.moveTo(startX + splitSec * 4, startY)
-    ctx.lineTo(startX + splitSec * 4, startY + splitSec * 2)
-    ctx.lineTo(startX + splitSec * 3, startY + splitSec * 2)
-    ctx.lineTo(startX + splitSec * 3, startY)
-    ctx.closePath()
+    const headStartX = this.directionX > 0 ? startX + splitSec * 3 : startX // 向左向右
+    ctx.rect(headStartX, startY, splitSec, splitSec * 2)
     ctx.fill()
 
+    // 嘴巴
     ctx.fillStyle = "orange"
     const mouthSize = {
       x: splitSec / 2,
       y: splitSec / 4,
     }
     ctx.beginPath()
-    ctx.moveTo(startX + splitSec * 4 + mouthSize.x, startY + splitSec)
-    ctx.lineTo(
-      startX + splitSec * 4 + mouthSize.x,
-      startY + splitSec + mouthSize.y
-    )
-    ctx.lineTo(startX + splitSec * 4, startY + splitSec + mouthSize.y)
-    ctx.lineTo(startX + splitSec * 4, startY + splitSec)
-    ctx.closePath()
+    const mouthStartX =
+      this.directionX > 0 ? startX + splitSec * 4 : headStartX - mouthSize.x
+    ctx.rect(mouthStartX, startY + splitSec, mouthSize.x, mouthSize.y)
     ctx.fill()
 
-    // ctx.fillStyle = 'black'
-    // const eyesize = splitSec / 16
-    // ctx.rect(20, 20, 150, 100);
+    // 眼睛
+    ctx.fillStyle = "black"
+    const eyeSize = splitSec / 4
+    ctx.beginPath()
+    ctx.rect(headStartX + splitSec / 2, startY + splitSec / 2, eyeSize, eyeSize)
+    ctx.fill()
   }
 
   drawBody(ctx) {
-    // 鴨鴨身體占下半部三分之二
+    // 鴨鴨身體占下半部二分之一
     const startX = this.center.x - this.size / 2
-    const splitSec = this.size / 2
+    const splitSec = this.size / 4
 
+    //身體
+    ctx.beginPath()
     ctx.fillStyle = "white"
-    ctx.beginPath()
-    ctx.rect(startX, this.center.y, this.size, splitSec)
+    ctx.rect(startX, this.center.y, this.size, splitSec * 2)
     ctx.fill()
 
+    // //翅膀
     ctx.beginPath()
-    ctx.fillStyle = "black"
-    ctx.arc(this.center.x, this.center.y, 5, 0, Math.PI * 2)
-    ctx.fill()
+    ctx.strokeStyle = "gray"
+    ctx.lineWidth = 3
+    const wingStartX =
+      this.directionX > 0 ? startX + splitSec * 3 : startX + splitSec
+    const wingEndX =
+      this.directionX > 0
+        ? wingStartX - splitSec * 2
+        : wingStartX + splitSec * 2
+    ctx.moveTo(wingStartX, this.center.y + splitSec / 2)
+    ctx.lineTo(wingStartX, this.center.y + splitSec * 1.5)
+    ctx.lineTo(wingEndX, this.center.y + splitSec * 1.5)
+    ctx.stroke()
   }
 
-  drawFeet(ctx) {}
+  drawFeet(ctx) {
+    const splitSec = this.size / 16
+    const baseY = this.center.y + this.size / 2 - splitSec
+    const baseX =
+      this.directionX > 0 ? this.center.x - splitSec : this.center.x + splitSec
+
+    ctx.beginPath()
+    ctx.strokeStyle = "orange"
+    ctx.lineWidth = 4
+    ctx.moveTo(baseX, baseY)
+    ctx.lineTo(baseX, baseY + splitSec * 4)
+    let toeX = this.directionX > 0 ? baseX + splitSec : baseX - splitSec
+    ctx.lineTo(toeX, baseY + splitSec * 4)
+
+    ctx.moveTo(baseX - splitSec * 2, baseY + splitSec)
+    ctx.lineTo(baseX - splitSec * 2, baseY + splitSec * 4)
+    toeX = this.directionX > 0 ? baseX - splitSec : baseX - splitSec * 3
+    ctx.lineTo(toeX, baseY + splitSec * 4)
+    ctx.stroke()
+  }
 
   drawNormalDuck(ctx) {
     this.drawBody(ctx)
     this.drawHead(ctx)
-    this.drawFeet()
+    this.drawFeet(ctx)
   }
 
   #getRandomDirectionAndSpeed() {

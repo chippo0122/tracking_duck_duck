@@ -5,14 +5,19 @@ import "./assets/styles/style.scss"
 const main = () => {
   const CANVAS = document.getElementById("CANVAS")
 
-  CANVAS.width = window.innerWidth - 30
-  CANVAS.height = window.innerHeight - 30
+  CANVAS.width = window.innerWidth
+  CANVAS.height = window.innerHeight - 100
 
   const field = new Field(CANVAS)
 
   const generateBtn = document.querySelector(".generate-duck")
 
   generateBtn.addEventListener("click", () => {
+    if (field.isStart) {
+      field.generateDucks()
+      return
+    }
+
     field.start()
     animate()
   })
