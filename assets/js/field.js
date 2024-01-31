@@ -9,7 +9,7 @@ class Field {
     this.canvas = canvas
     this.ctx = canvas.getContext("2d")
     this.ducks = []
-    this.hut = null
+    this.huts = []
 
     // process
     this.isStart = false
@@ -22,16 +22,25 @@ class Field {
 
   start() {
     this.isStart = true
-    this.generateDucks()
+    this.generateField()
     this.#addEventListener()
   }
 
-  generateDucks() {
-    const arr = Array.from(Array(10)).map(() => {
+  generateField() {
+    const ducks = Array.from(Array(10)).map(() => {
       return new Duck(new Point(this.canvas.width / 2, this.canvas.height / 2))
     })
 
-    this.ducks = arr
+    const huts = Array.from(Array(3)).map(() => {
+      const x = Math.floor(Math.random() * (this.canvas.width - Hut.size().x))
+      const y = Math.floor(Math.random() * (this.canvas.height - Hut.size().y))
+
+      return new Hut(new Point(x, y))
+    })
+
+    this.ducks = ducks
+    this.huts = huts
+    console.log(huts)
   }
 
   draw() {

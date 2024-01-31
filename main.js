@@ -14,7 +14,7 @@ const main = () => {
 
   generateBtn.addEventListener("click", () => {
     if (field.isStart) {
-      field.generateDucks()
+      field.generateField()
       return
     }
 
