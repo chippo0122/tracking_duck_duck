@@ -1,20 +1,20 @@
 /** @format */
 
 class Hut {
-  constructor(center, { width = 120, hegiht = 90 } = {}) {
+  constructor(center, { width = 120, height = 90 } = {}) {
     this.center = center
     this.size = {
       width: width,
-      hegiht: hegiht,
+      height: height,
     }
   }
 
   draw(ctx) {
     const initX = this.center.x - this.size.width / 2
-    const initY = this.center.y - this.size.hegiht / 2
+    const initY = this.center.y - this.size.height / 2
 
     const splictSecX = this.size.width / 6
-    const splictSecY = this.size.hegiht / 2
+    const splictSecY = this.size.height / 2
 
     const inset = splictSecX / 2
 

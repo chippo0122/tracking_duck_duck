@@ -31,18 +31,40 @@ class Field {
       return new Duck(new Point(this.canvas.width / 2, this.canvas.height / 2))
     })
 
-    const hutX = 120
-    const hutY = 90
-    const huts = Array.from(Array(3)).map(() => {
-      const x = Math.floor(Math.random() * (this.canvas.width - hutX))
-      const y = Math.floor(Math.random() * (this.canvas.height - hutY))
+    const hutX = 100
+    const hutY = 80
 
-      return new Hut(new Point(x, y), { width: hutX, hegiht: hutY })
-    })
+    const genHutPos = (existingPos) => {
+      let x = Math.floor(Math.random() * (this.canvas.width - hutX))
+      let y = Math.floor(Math.random() * (this.canvas.height - hutY))
+
+      if (x < hutX) x = hutX
+      if (y < hutY) y = hutY
+
+      const newPos = new Point(x, y)
+      let isPass = true
+
+      existingPos.forEach((el) => {
+        if (distance(el, newPos) < Math.hypot(hutX, hutY)) {
+          isPass = false
+        }
+      })
+
+      if (!isPass) {
+        return genHutPos(existingPos)
+      }
+
+      return newPos
+    }
+
+    const huts = []
+    for (let i = 0; i < 3; i += 1) {
+      const p = genHutPos(huts.map((el) => el.center))
+      huts.push(new Hut(p, { width: hutX, height: hutY }))
+    }
 
     this.ducks = ducks
     this.huts = huts
-    console.log(huts)
   }
 
   draw() {
