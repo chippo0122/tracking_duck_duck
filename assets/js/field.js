@@ -27,20 +27,20 @@ class Field {
   }
 
   generateField() {
-    // const ducks = Array.from(Array(10)).map(() => {
-    //   return new Duck(new Point(this.canvas.width / 2, this.canvas.height / 2))
-    // })
+    const ducks = Array.from(Array(10)).map(() => {
+      return new Duck(new Point(this.canvas.width / 2, this.canvas.height / 2))
+    })
 
     const hutX = 120
     const hutY = 90
-    const huts = Array.from(Array(1)).map(() => {
+    const huts = Array.from(Array(3)).map(() => {
       const x = Math.floor(Math.random() * (this.canvas.width - hutX))
       const y = Math.floor(Math.random() * (this.canvas.height - hutY))
 
       return new Hut(new Point(x, y), { width: hutX, hegiht: hutY })
     })
 
-    // this.ducks = ducks
+    this.ducks = ducks
     this.huts = huts
     console.log(huts)
   }
@@ -49,16 +49,16 @@ class Field {
     if (!this.isStart || this.isFinish) return
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    // if (this.ducks.length < 1) return
+    if (this.ducks.length < 1) return
 
     this.huts.forEach((hut) => {
       hut.draw(this.ctx)
     })
 
-    // this.ducks.forEach((duck) => {
-    //   duck.workAround(this.canvas.width, this.canvas.height)
-    //   duck.draw(this.ctx)
-    // })
+    this.ducks.forEach((duck) => {
+      duck.workAround(this.canvas.width, this.canvas.height)
+      duck.draw(this.ctx)
+    })
   }
 
   #handlePressDown(e) {

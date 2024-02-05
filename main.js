@@ -12,24 +12,24 @@ const main = () => {
 
   const generateBtn = document.querySelector(".generate-duck")
 
-  // generateBtn.addEventListener("click", () => {
-  //   if (field.isStart) {
-  //     field.generateField()
-  //     return
-  //   }
+  generateBtn.addEventListener("click", () => {
+    if (field.isStart) {
+      field.generateField()
+      return
+    }
 
-  //   field.start()
-  //   animate()
-  // })
+    field.start()
+    animate()
+  })
 
   const animate = () => {
     field.draw()
     requestAnimationFrame(animate)
   }
 
-  field.start()
-  field.generateField()
-  animate()
+  // field.start()
+  // field.generateField()
+  // animate()
 }
 
 window.onload = main
