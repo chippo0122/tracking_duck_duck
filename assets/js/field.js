@@ -31,6 +31,8 @@ class Field {
       return new Duck(new Point(this.canvas.width / 2, this.canvas.height / 2))
     })
 
+    this.ducks = ducks
+
     const hutX = 100
     const hutY = 80
 
@@ -44,8 +46,16 @@ class Field {
       const newPos = new Point(x, y)
       let isPass = true
 
+      const range = Math.hypot(hutX, hutY)
       existingPos.forEach((el) => {
-        if (distance(el, newPos) < Math.hypot(hutX, hutY)) {
+        if (distance(el, newPos) < range) {
+          isPass = false
+        }
+      })
+
+      this.ducks.forEach((duck) => {
+        if (distance(duck.center, newPos) < range) {
+          console.log(duck.center, newPos, "<<<")
           isPass = false
         }
       })
@@ -63,8 +73,19 @@ class Field {
       huts.push(new Hut(p, { width: hutX, height: hutY }))
     }
 
-    this.ducks = ducks
     this.huts = huts
+  }
+
+  checkIsCloseToHut(duck) {
+    const threshold =
+      this.huts.length > 0
+        ? Math.hypot(this.huts[0].size.width, this.huts[0].size.height)
+        : 100
+    const hut = this.huts.find(
+      (el) => distance(el.center, duck.center) < threshold
+    )
+
+    return hut
   }
 
   draw() {
@@ -78,6 +99,13 @@ class Field {
     })
 
     this.ducks.forEach((duck) => {
+      // 逃離hut
+      const check = this.checkIsCloseToHut(duck)
+
+      if (check) {
+        duck.escape()
+      }
+
       duck.workAround(this.canvas.width, this.canvas.height)
       duck.draw(this.ctx)
     })
