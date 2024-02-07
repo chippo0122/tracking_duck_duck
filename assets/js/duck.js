@@ -1,7 +1,8 @@
 /** @format */
 
 class Duck {
-  constructor(point) {
+  constructor(point, id) {
+    this.id = id
     this.center = point
     this.size = 60
     // workaround

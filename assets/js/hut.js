@@ -1,12 +1,18 @@
 /** @format */
 
 class Hut {
-  constructor(center, { width = 120, height = 90 } = {}) {
+  constructor(center, category, { width = 120, height = 90 } = {}) {
     this.center = center
+    this.category = category
+    this.count = 0
     this.size = {
       width: width,
       height: height,
     }
+  }
+
+  putDuck() {
+    this.count += 1
   }
 
   draw(ctx) {

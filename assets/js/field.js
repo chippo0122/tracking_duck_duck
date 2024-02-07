@@ -27,8 +27,11 @@ class Field {
   }
 
   generateField() {
-    const ducks = Array.from(Array(10)).map(() => {
-      return new Duck(new Point(this.canvas.width / 2, this.canvas.height / 2))
+    const ducks = Array.from(Array(10)).map((el, index) => {
+      return new Duck(
+        new Point(this.canvas.width / 2, this.canvas.height / 2),
+        index
+      )
     })
 
     this.ducks = ducks
@@ -55,7 +58,6 @@ class Field {
 
       this.ducks.forEach((duck) => {
         if (distance(duck.center, newPos) < range) {
-          console.log(duck.center, newPos, "<<<")
           isPass = false
         }
       })
@@ -67,10 +69,11 @@ class Field {
       return newPos
     }
 
+    const categories = ["感情", "事業", "財運", "健康"]
     const huts = []
-    for (let i = 0; i < 3; i += 1) {
+    for (let i = 0; i < categories.length; i += 1) {
       const p = genHutPos(huts.map((el) => el.center))
-      huts.push(new Hut(p, { width: hutX, height: hutY }))
+      huts.push(new Hut(p, categories[i], { width: hutX, height: hutY }))
     }
 
     this.huts = huts
@@ -79,8 +82,8 @@ class Field {
   checkIsCloseToHut(duck) {
     const threshold =
       this.huts.length > 0
-        ? Math.hypot(this.huts[0].size.width, this.huts[0].size.height)
-        : 100
+        ? Math.hypot(this.huts[0].size.width, this.huts[0].size.height) / 1.5
+        : 80
     const hut = this.huts.find(
       (el) => distance(el.center, duck.center) < threshold
     )
@@ -152,6 +155,17 @@ class Field {
   #handlePressUp() {
     if (this.selected) {
       this.selected.release()
+    }
+
+    const closeHut = this.selected
+      ? this.checkIsCloseToHut(this.selected)
+      : null
+    if (closeHut) {
+      const selectedIndex = this.ducks.findIndex(
+        (el) => el.id === this.selected.id
+      )
+      closeHut.putDuck()
+      this.ducks.splice(selectedIndex, 1)
     }
 
     this.drag = false
