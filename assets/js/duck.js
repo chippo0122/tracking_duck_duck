@@ -12,7 +12,7 @@ class Duck {
     // status
     this.isCatch = false
     //random seed
-    this.count = Math.min(5, Math.random() * 15) * 60
+    this.count = Math.min(3, Math.random() * 5) * 60
 
     this.#getRandomDirectionAndSpeed()
   }
@@ -224,9 +224,7 @@ class Duck {
     this.directionX = 0 - this.directionX
     this.directionY = 0 - this.directionY
 
-    //隨機速度
-    const speed = (Math.floor(Math.random() * 2) + 1) / 2
-    this.speed = speed
+    this.speed = 2
   }
 }
 

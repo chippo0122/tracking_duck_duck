@@ -42,8 +42,8 @@ class Field {
 
     this.ducks = ducks
 
-    const hutX = 90
-    const hutY = 60
+    const hutX = 80
+    const hutY = 50
 
     const genHutPos = (existingPos) => {
       let x = Math.floor(Math.random() * (this.canvas.width - hutX))
