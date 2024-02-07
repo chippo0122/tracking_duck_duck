@@ -6,7 +6,7 @@ const main = () => {
   const CANVAS = document.getElementById("CANVAS")
 
   CANVAS.width = window.innerWidth
-  CANVAS.height = window.innerHeight - 100
+  CANVAS.height = window.innerHeight
 
   const field = new Field(CANVAS)
 

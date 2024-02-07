@@ -1,5 +1,21 @@
 @import './reset.scss';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&family=Rampart+One&family=Stick&display=swap');
+
+body {
+	overflow: hidden;
+  height: 100dvh;
+}
 
 #CANVAS {
 	background-color: #41996d
 }
+
+.generate-duck {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+}
+
+// font-family: 'Noto Sans TC', sans-serif;
+// font-family: 'Rampart One', sans-serif;
+// font-family: 'Stick', sans-serif;

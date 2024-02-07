@@ -87,6 +87,15 @@ class Hut {
       splictSecY * 0.55
     )
     ctx.fill()
+
+    ctx.beginPath()
+    ctx.font = "24px 'Stick'"
+    ctx.fillStyle = "white"
+    ctx.fillText(
+      `${this.count} ${this.category}`,
+      this.center.x,
+      initY + this.size.height + splictSecY / 4
+    )
   }
 }
 

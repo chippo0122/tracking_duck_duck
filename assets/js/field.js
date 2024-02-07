@@ -8,6 +8,7 @@ class Field {
     // datas
     this.canvas = canvas
     this.ctx = canvas.getContext("2d")
+    this.wishes = ["❤️❤️", "💰💰", "💪💪", "💼💼"]
     this.ducks = []
     this.huts = []
 
@@ -26,6 +27,11 @@ class Field {
     this.#addEventListener()
   }
 
+  finish() {
+    this.isFinish = true
+    this.#removeEventListener()
+  }
+
   generateField() {
     const ducks = Array.from(Array(10)).map((el, index) => {
       return new Duck(
@@ -36,8 +42,8 @@ class Field {
 
     this.ducks = ducks
 
-    const hutX = 100
-    const hutY = 80
+    const hutX = 90
+    const hutY = 60
 
     const genHutPos = (existingPos) => {
       let x = Math.floor(Math.random() * (this.canvas.width - hutX))
@@ -69,11 +75,10 @@ class Field {
       return newPos
     }
 
-    const categories = ["感情", "事業", "財運", "健康"]
     const huts = []
-    for (let i = 0; i < categories.length; i += 1) {
+    for (let i = 0; i < this.wishes.length; i += 1) {
       const p = genHutPos(huts.map((el) => el.center))
-      huts.push(new Hut(p, categories[i], { width: hutX, height: hutY }))
+      huts.push(new Hut(p, this.wishes[i], { width: hutX, height: hutY }))
     }
 
     this.huts = huts
@@ -85,7 +90,7 @@ class Field {
         ? Math.hypot(this.huts[0].size.width, this.huts[0].size.height) / 1.5
         : 80
     const hut = this.huts.find(
-      (el) => distance(el.center, duck.center) < threshold
+      (hut) => distance(hut.center, duck.center) < threshold
     )
 
     return hut
@@ -93,6 +98,10 @@ class Field {
 
   draw() {
     if (!this.isStart || this.isFinish) return
+
+    if (this.isStart && this.ducks.length < 1) {
+      this.finish()
+    }
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     if (this.ducks.length < 1) return
@@ -115,6 +124,8 @@ class Field {
   }
 
   #handlePressDown(e) {
+    if (!this.isStart || this.isFinish) return
+
     this.drag = true
     const x = e.type === "touchstart" ? e.touches[0].clientX : e.offsetX
     const y = e.type === "touchstart" ? e.touches[0].clientY : e.offsetY
@@ -153,6 +164,8 @@ class Field {
   }
 
   #handlePressUp() {
+    if (!this.isStart || this.isFinish) return
+
     if (this.selected) {
       this.selected.release()
     }
@@ -179,6 +192,27 @@ class Field {
     this.canvas.addEventListener("mousemove", this.#handlePressMove.bind(this))
     this.canvas.addEventListener("mouseup", this.#handlePressUp.bind(this))
     this.canvas.addEventListener("touchend", this.#handlePressUp.bind(this))
+  }
+
+  #removeEventListener() {
+    this.canvas.removeEventListener(
+      "mousedown",
+      this.#handlePressDown.bind(this)
+    )
+    this.canvas.removeEventListener(
+      "touchstart",
+      this.#handlePressDown.bind(this)
+    )
+    this.canvas.removeEventListener(
+      "touchmove",
+      this.#handlePressMove.bind(this)
+    )
+    this.canvas.removeEventListener(
+      "mousemove",
+      this.#handlePressMove.bind(this)
+    )
+    this.canvas.removeEventListener("mouseup", this.#handlePressUp.bind(this))
+    this.canvas.removeEventListener("touchend", this.#handlePressUp.bind(this))
   }
 }
 
