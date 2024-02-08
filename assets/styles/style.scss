@@ -20,10 +20,18 @@ body {
   left: 20px;
 }
 
-.step {
+.next {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  color: #fff;
+  font-style: 18px;
+}
+
+.prev {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
   color: #fff;
   font-style: 18px;
 }

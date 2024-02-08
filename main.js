@@ -8,37 +8,34 @@ const main = () => {
   const contact = document.querySelector(".contact")
   const generateBtn = document.querySelector(".generate-duck")
   const modal = document.querySelector(".show-story")
-  const next = document.querySelector(".step")
+  const next = document.querySelector(".next")
+  const back = document.querySelector(".prev")
 
   // utils
-  const toggleNext = () => {
-    if (next.classList.contains("hide")) {
-      next.classList.remove("hide")
-      return
-    }
-
-    next.classList.add("hide")
-  }
-
-  const toggleModal = () => {
-    if (modal.classList.contains("hide")) {
-      modal.classList.remove("hide")
-      return
-    }
-
-    modal.classList.add("hide")
-  }
-
   const showContact = (arr, idx) => {
     contact.innerHTML = arr[idx]
   }
+
   // intro
   let currentIntroStep = 0
 
+  const backIntro = () => {
+    currentIntroStep -= 1
+    showContact(Intro, currentIntroStep)
+
+    if (currentIntroStep < 1) {
+      back.classList.add("hide")
+      return
+    }
+
+    back.classList.remove("hide")
+  }
+
   const nextIntro = () => {
     if (currentIntroStep + 1 >= Intro.length) {
-      toggleNext()
-      toggleModal()
+      next.classList.add("hide")
+      back.classList.add("hide")
+      modal.classList.add("hide")
       field.start()
       animate()
       return
@@ -46,11 +43,17 @@ const main = () => {
 
     currentIntroStep += 1
     showContact(Intro, currentIntroStep)
+
+    if (currentIntroStep > 0) {
+      console.log("!!!")
+      back.classList.remove("hide")
+    }
   }
 
   contact.innerHTML = Intro[currentIntroStep]
 
   next.addEventListener("click", nextIntro)
+  back.addEventListener("click", backIntro)
 
   //game starts
   const CANVAS = document.getElementById("CANVAS")
@@ -60,22 +63,28 @@ const main = () => {
 
   const field = new Field(CANVAS)
 
-  generateBtn.addEventListener("click", () => {
-    if (field.isStart && !field.isFinish) {
-      field.generateField()
-      return
-    }
+  // generateBtn.addEventListener("click", () => {
+  //   if (field.isStart && !field.isFinish) {
+  //     field.generateField()
+  //     return
+  //   }
 
-    if (field.isStart && field.isFinish) {
-      field.start()
-      return
-    }
+  //   if (field.isStart && field.isFinish) {
+  //     field.start()
+  //     return
+  //   }
 
-    field.start()
-    animate()
-  })
+  //   field.start()
+  //   animate()
+  // })
 
   const animate = () => {
+    if (field.isStart && field.isFinish) {
+      //中斷點
+      console.log("DONE")
+      return
+    }
+
     field.draw()
     requestAnimationFrame(animate)
   }
