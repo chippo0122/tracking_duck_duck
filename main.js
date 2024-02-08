@@ -11,6 +11,15 @@ const main = () => {
   const next = document.querySelector(".step")
 
   // utils
+  const toggleNext = () => {
+    if (next.classList.contains("hide")) {
+      next.classList.remove("hide")
+      return
+    }
+
+    next.classList.add("hide")
+  }
+
   const toggleModal = () => {
     if (modal.classList.contains("hide")) {
       modal.classList.remove("hide")
@@ -28,7 +37,10 @@ const main = () => {
 
   const nextIntro = () => {
     if (currentIntroStep + 1 >= Intro.length) {
+      toggleNext()
       toggleModal()
+      field.start()
+      animate()
       return
     }
 
