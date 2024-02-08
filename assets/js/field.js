@@ -23,6 +23,7 @@ class Field {
 
   start() {
     this.isStart = true
+    this.isFinish = false
     this.generateField()
     this.#addEventListener()
   }
@@ -101,6 +102,7 @@ class Field {
 
     if (this.isStart && this.ducks.length < 1) {
       this.finish()
+      console.log(this.isStart, this.isFinish)
     }
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
