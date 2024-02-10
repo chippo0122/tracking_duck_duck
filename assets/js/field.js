@@ -3,7 +3,7 @@ import Hut from "./hut"
 import Duck from "./duck"
 import Point from "./point"
 import { distance } from "./util"
-import { Outro } from "../static/script"
+
 class Field {
   constructor(canvas) {
     // datas
@@ -129,52 +129,109 @@ class Field {
   makeResult(outro) {
     const maps = {
       "❤️❤️": {
-        content: "感情❤️",
+        content: "感情",
         color: "pink",
       },
       "💰💰": {
-        content: "財運💰",
+        content: "財運",
         color: "gold",
       },
       "💪💪": {
-        content: "健康💪",
+        content: "健康",
         color: "green",
       },
       "💼💼": {
-        content: "事業💼",
+        content: "事業",
         color: "teal",
       },
     }
     const total = this.huts.map((el) => el.count).reduce((a, b) => a + b)
-    const elements = this.huts.map((el) => ({
-      title: maps[el.category].content,
-      color: maps[el.category].color,
-      score: el.count,
-    }))
-    const queue = []
+    const elements = this.huts
+      .map((el) => ({
+        title: maps[el.category].content,
+        color: maps[el.category].color,
+        score: el.count,
+      }))
+      .sort((a, b) => a.score + b.score)
 
-    const context1 = `
-      <div style="width: 100%; height: 15px; display: flex; flex-wrap: no-wrap">
+    const bias = []
+    let conclusion = ""
+
+    elements.forEach((el) => {
+      if (el.score >= 3) {
+        bias.push(el)
+      }
+    })
+
+    console.log(bias)
+
+    if (bias.length > 2 && !bias.map((el) => el.score).find((el) => el > 3)) {
+      conclusion =
+        "看起來妳的願望很平均的呢！看來鴨鴨可以兵分四路，為妳所有的願望給上支援呢"
+    } else if (bias.length > 2) {
+      // 3, 3, 3, 1 | 4, 3, 3, 0
+      conclusion = "看起來妳的願望還算平均！鴨鴨"
+    } else if (
+      bias.length > 1 &&
+      bias.map((el) => el.score).find((el) => el > 3)
+    ) {
+      // 5, 4, 1, 0 | 5, 5, 0, 0 | 6, 4, 0, 0 | 7, 3, 0, 0 | 6, 3, 1, 0
+      conclusion = `看起來妳的願望比較著重在${bias[0].title}跟${bias[1].title}上呢`
+    } else if (bias.length === 1) {
+      conclusion = `鴨鴨看到妳對${bias[0].title}的決心了，因此牠們決定`
+    } else {
+      conclusion = "!!!"
+    }
+
+    const context = `
+    <div style="width: 100%; display: flex; flex-wrap: no-wrap; justify-content: space-between; margin-bottom: 15px">
+      <div class="width: 25%; font-size: 10px">
+        <span style="display: inline-block; width: 15px; height: 15px; background: ${
+          elements[0].color
+        }">
+        </span>
+        ${elements[0].title}
+      </div>
+      <div class="width: 25%; font-size: 10px">
+        <span style="display: inline-block; width: 15px; height: 15px; background: ${
+          elements[1].color
+        }">
+        </span>
+        ${elements[1].title}
+      </div>
+      <div class="width: 25%; font-size: 10px">
+        <span style="display: inline-block; width: 15px; height: 15px; background: ${
+          elements[2].color
+        }">
+        </span>
+        ${elements[2].title}
+      </div>
+      <div class="width: 25%; font-size: 10px">
+        <span style="display: inline-block; width: 15px; height: 15px; background: ${
+          elements[3].color
+        }">
+        </span>
+        ${elements[3].title}
+      </div>
+    </div>
+      <div style="width: 100%; height: 15px; display: flex; flex-wrap: no-wrap; margin-bottom: 15px">
         <div style="width: ${(elements[0].score / total) * 100}%; background: ${
       elements[0].color
-    }">${elements[0].score}</div>
+    }">${elements[0].score || ""}</div>
         <div style="width: ${(elements[1].score / total) * 100}%; background: ${
       elements[1].color
-    }">${elements[1].score}</div>
+    }">${elements[1].score || ""}</div>
         <div style="width: ${(elements[2].score / total) * 100}%; background: ${
       elements[2].color
-    }">${elements[0].score}</div>
+    }">${elements[2].score || ""}</div>
         <div style="width: ${(elements[3].score / total) * 100}%; background: ${
       elements[3].color
-    }">${elements[3].score}</div>
+    }">${elements[3].score || ""}</div>
       </div>
+      <span>${conclusion}</span>
     `
 
-    queue.push(context1)
-
-    queue.forEach((el) => {
-      outro.push(el)
-    })
+    outro.push(context)
   }
 
   #handlePressDown(e) {

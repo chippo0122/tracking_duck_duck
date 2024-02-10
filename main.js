@@ -76,7 +76,7 @@ const main = () => {
 
   const backOutro = () => {
     currentOutroStep -= 1
-    showContact(Intro, currentOutroStep)
+    showContact(Outro, currentOutroStep)
 
     if (currentOutroStep < 1) {
       back.classList.add("hide")
@@ -87,14 +87,13 @@ const main = () => {
   }
 
   const setOutro = () => {
+    // 製作結果
+    field.makeResult(Outro)
     next.classList.remove("hide")
     next.addEventListener("click", nextOutro)
     back.classList.remove("hide")
     back.addEventListener("click", backOutro)
     modal.classList.remove("hide")
-
-    // 製作結果
-    field.makeResult(Outro)
 
     showContact(Outro, currentOutroStep)
   }
