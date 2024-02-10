@@ -1,22 +1,24 @@
 /** @format */
-import { Intro } from "./assets/static/script"
+import { Intro, Outro } from "./assets/static/script"
 import Field from "./assets/js/field"
 import "./assets/styles/style.scss"
 
 const main = () => {
   // controls
+  const body = document.querySelector("body")
   const contact = document.querySelector(".contact")
   const generateBtn = document.querySelector(".generate-duck")
   const modal = document.querySelector(".show-story")
   const next = document.querySelector(".next")
   const back = document.querySelector(".prev")
 
-  // utils
+  /* util */
   const showContact = (arr, idx) => {
     contact.innerHTML = arr[idx]
   }
+  /* end of util */
 
-  // intro
+  /* intros */
   let currentIntroStep = 0
 
   const backIntro = () => {
@@ -36,6 +38,8 @@ const main = () => {
       next.classList.add("hide")
       back.classList.add("hide")
       modal.classList.add("hide")
+      next.removeEventListener("click", nextIntro)
+      back.removeEventListener("click", backIntro)
       field.start()
       animate()
       return
@@ -45,21 +49,63 @@ const main = () => {
     showContact(Intro, currentIntroStep)
 
     if (currentIntroStep > 0) {
-      console.log("!!!")
       back.classList.remove("hide")
     }
   }
 
-  contact.innerHTML = Intro[currentIntroStep]
+  showContact(Intro, currentIntroStep)
 
   next.addEventListener("click", nextIntro)
   back.addEventListener("click", backIntro)
+  /* end of intro */
+  /* outro */
+  let currentOutroStep = 0
 
-  //game starts
+  const nextOutro = () => {
+    if (currentOutroStep + 1 >= Outro.length) {
+      console.log("END")
+    }
+
+    currentOutroStep += 1
+    showContact(Outro, currentOutroStep)
+
+    if (currentOutroStep > 0) {
+      back.classList.remove("hide")
+    }
+  }
+
+  const backOutro = () => {
+    currentOutroStep -= 1
+    showContact(Intro, currentOutroStep)
+
+    if (currentOutroStep < 1) {
+      back.classList.add("hide")
+      return
+    }
+
+    back.classList.remove("hide")
+  }
+
+  const setOutro = () => {
+    next.classList.remove("hide")
+    next.addEventListener("click", nextOutro)
+    back.classList.remove("hide")
+    back.addEventListener("click", backOutro)
+    modal.classList.remove("hide")
+
+    // 製作結果
+    field.makeResult(Outro)
+
+    showContact(Outro, currentOutroStep)
+  }
+
+  /* end of outro */
+
+  /* handle game start */
   const CANVAS = document.getElementById("CANVAS")
 
-  CANVAS.width = window.innerWidth
-  CANVAS.height = window.innerHeight
+  CANVAS.width = body.offsetWidth
+  CANVAS.height = body.offsetHeight
 
   const field = new Field(CANVAS)
 
@@ -81,7 +127,7 @@ const main = () => {
   const animate = () => {
     if (field.isStart && field.isFinish) {
       //中斷點
-      console.log("DONE")
+      setOutro()
       return
     }
 

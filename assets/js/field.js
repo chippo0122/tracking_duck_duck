@@ -3,6 +3,7 @@ import Hut from "./hut"
 import Duck from "./duck"
 import Point from "./point"
 import { distance } from "./util"
+import { Outro } from "../static/script"
 class Field {
   constructor(canvas) {
     // datas
@@ -122,6 +123,57 @@ class Field {
 
       duck.workAround(this.canvas.width, this.canvas.height)
       duck.draw(this.ctx)
+    })
+  }
+
+  makeResult(outro) {
+    const maps = {
+      "❤️❤️": {
+        content: "感情❤️",
+        color: "pink",
+      },
+      "💰💰": {
+        content: "財運💰",
+        color: "gold",
+      },
+      "💪💪": {
+        content: "健康💪",
+        color: "green",
+      },
+      "💼💼": {
+        content: "事業💼",
+        color: "teal",
+      },
+    }
+    const total = this.huts.map((el) => el.count).reduce((a, b) => a + b)
+    const elements = this.huts.map((el) => ({
+      title: maps[el.category].content,
+      color: maps[el.category].color,
+      score: el.count,
+    }))
+    const queue = []
+
+    const context1 = `
+      <div style="width: 100%; height: 15px; display: flex; flex-wrap: no-wrap">
+        <div style="width: ${(elements[0].score / total) * 100}%; background: ${
+      elements[0].color
+    }">${elements[0].score}</div>
+        <div style="width: ${(elements[1].score / total) * 100}%; background: ${
+      elements[1].color
+    }">${elements[1].score}</div>
+        <div style="width: ${(elements[2].score / total) * 100}%; background: ${
+      elements[2].color
+    }">${elements[0].score}</div>
+        <div style="width: ${(elements[3].score / total) * 100}%; background: ${
+      elements[3].color
+    }">${elements[3].score}</div>
+      </div>
+    `
+
+    queue.push(context1)
+
+    queue.forEach((el) => {
+      outro.push(el)
     })
   }
 

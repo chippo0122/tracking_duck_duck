@@ -130,7 +130,7 @@ class Duck {
     ctx.rect(startX, this.center.y, this.size, splitSec * 2)
     ctx.fill()
 
-    // //翅膀
+    // 翅膀
     ctx.beginPath()
     ctx.strokeStyle = "gray"
     ctx.lineWidth = 3
