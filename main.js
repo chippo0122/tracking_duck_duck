@@ -7,10 +7,10 @@ const main = () => {
   // controls
   const body = document.querySelector("body")
   const contact = document.querySelector(".contact")
-  const generateBtn = document.querySelector(".generate-duck")
   const modal = document.querySelector(".show-story")
   const next = document.querySelector(".next")
   const back = document.querySelector(".prev")
+  const restart = document.querySelector(".restart")
 
   /* util */
   const showContact = (arr, idx) => {
@@ -60,23 +60,25 @@ const main = () => {
   /* end of intro */
   /* outro */
   let currentOutroStep = 0
+  let outro = []
 
   const nextOutro = () => {
-    if (currentOutroStep + 1 >= Outro.length) {
-      console.log("END")
-    }
-
     currentOutroStep += 1
-    showContact(Outro, currentOutroStep)
+    showContact(outro, currentOutroStep)
 
     if (currentOutroStep > 0) {
       back.classList.remove("hide")
+    }
+
+    if (currentOutroStep + 1 >= outro.length) {
+      next.classList.add("hide")
+      restart.classList.remove("hide")
     }
   }
 
   const backOutro = () => {
     currentOutroStep -= 1
-    showContact(Outro, currentOutroStep)
+    showContact(outro, currentOutroStep)
 
     if (currentOutroStep < 1) {
       back.classList.add("hide")
@@ -88,14 +90,16 @@ const main = () => {
 
   const setOutro = () => {
     // 製作結果
-    field.makeResult(Outro)
-    next.classList.remove("hide")
+    outro = field.makeResult(Outro)
+
     next.addEventListener("click", nextOutro)
-    back.classList.remove("hide")
     back.addEventListener("click", backOutro)
+
+    next.classList.remove("hide")
+    back.classList.remove("hide")
     modal.classList.remove("hide")
 
-    showContact(Outro, currentOutroStep)
+    showContact(outro, currentOutroStep)
   }
 
   /* end of outro */
@@ -108,20 +112,11 @@ const main = () => {
 
   const field = new Field(CANVAS)
 
-  // generateBtn.addEventListener("click", () => {
-  //   if (field.isStart && !field.isFinish) {
-  //     field.generateField()
-  //     return
-  //   }
+  const restartGame = () => {
+    window.location.reload()
+  }
 
-  //   if (field.isStart && field.isFinish) {
-  //     field.start()
-  //     return
-  //   }
-
-  //   field.start()
-  //   animate()
-  // })
+  restart.addEventListener("click", restartGame)
 
   const animate = () => {
     if (field.isStart && field.isFinish) {

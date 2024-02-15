@@ -3,6 +3,7 @@ import Hut from "./hut"
 import Duck from "./duck"
 import Point from "./point"
 import { distance } from "./util"
+import { Outro } from "../static/script"
 
 class Field {
   constructor(canvas) {
@@ -231,7 +232,7 @@ class Field {
       <span>${conclusion}</span>
     `
 
-    outro.push(context)
+    return [...outro, context]
   }
 
   #handlePressDown(e) {
