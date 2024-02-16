@@ -153,35 +153,39 @@ class Field {
         color: maps[el.category].color,
         score: el.count,
       }))
-      .sort((a, b) => a.score + b.score)
+      .sort((a, b) => b.score - a.score)
 
-    const bias = []
+    // reset
     let conclusion = ""
+    let wishesCount = elements.filter((el) => el.score > 0).length
+    const bias = []
 
     elements.forEach((el) => {
-      if (el.score >= 3) {
+      if (el.score > 3) {
         bias.push(el)
       }
     })
 
-    console.log(bias)
+    const biasTotal =
+      bias.length > 0 ? bias.map((el) => el.score).reduce((a, b) => a + b) : 0
 
-    if (bias.length > 2 && !bias.map((el) => el.score).find((el) => el > 3)) {
-      conclusion =
-        "看起來妳的願望很平均的呢！看來鴨鴨可以兵分四路，為妳所有的願望給上支援呢"
-    } else if (bias.length > 2) {
-      // 3, 3, 3, 1 | 4, 3, 3, 0
-      conclusion = "看起來妳的願望還算平均！鴨鴨"
-    } else if (
-      bias.length > 1 &&
-      bias.map((el) => el.score).find((el) => el > 3)
-    ) {
-      // 5, 4, 1, 0 | 5, 5, 0, 0 | 6, 4, 0, 0 | 7, 3, 0, 0 | 6, 3, 1, 0
-      conclusion = `看起來妳的願望比較著重在${bias[0].title}跟${bias[1].title}上呢`
-    } else if (bias.length === 1) {
-      conclusion = `鴨鴨看到妳對${bias[0].title}的決心了，因此牠們決定`
+    console.log(bias, wishesCount, biasTotal)
+
+    if (biasTotal > 6 && bias.length === 1) {
+      conclusion = `鴨鴨看到妳對於${elements[0].title}的執著了！`
+    } else if (bias.length - wishesCount <= 1 && biasTotal > 7) {
+      conclusion = `妳的願望好像著重在`
+
+      bias.forEach((el, idx) => {
+        conclusion += el.title
+        if (idx + 1 !== bias.length) {
+          conclusion += "和"
+        }
+      })
+
+      conclusion += "呢！"
     } else {
-      conclusion = "!!!"
+      conclusion = "哇看起來妳有很多想做的事呢！"
     }
 
     const context = `
@@ -229,7 +233,7 @@ class Field {
       elements[3].color
     }">${elements[3].score || ""}</div>
       </div>
-      <span>${conclusion}</span>
+      <p>${conclusion}</p>
     `
 
     return [...outro, context]
