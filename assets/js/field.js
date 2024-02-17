@@ -3,7 +3,7 @@ import Hut from "./hut"
 import Duck from "./duck"
 import Point from "./point"
 import { distance } from "./util"
-import { Outro } from "../static/script"
+import { Specific, Normal } from "../static/script"
 
 class Field {
   constructor(canvas) {
@@ -159,6 +159,7 @@ class Field {
     let conclusion = ""
     let wishesCount = elements.filter((el) => el.score > 0).length
     const bias = []
+    let wishesList = ""
 
     elements.forEach((el) => {
       if (el.score > 3) {
@@ -169,10 +170,11 @@ class Field {
     const biasTotal =
       bias.length > 0 ? bias.map((el) => el.score).reduce((a, b) => a + b) : 0
 
-    console.log(bias, wishesCount, biasTotal)
-
     if (biasTotal > 6 && bias.length === 1) {
       conclusion = `鴨鴨看到妳對於${elements[0].title}的執著了！`
+      wishesList += `<li style="margin-top: 5px">鴨鴨決定全力幫妳${
+        Specific[elements[0].title]
+      }</li>`
     } else if (bias.length - wishesCount <= 1 && biasTotal > 7) {
       conclusion = `妳的願望好像著重在`
 
@@ -181,11 +183,27 @@ class Field {
         if (idx + 1 !== bias.length) {
           conclusion += "和"
         }
+
+        if (idx < 1) {
+          wishesList += `<li style="margin-top: 5px">鴨鴨先${
+            Specific[el.title]
+          }</li>`
+        } else {
+          wishesList += `<li style="margin-top: 5px">再${
+            Specific[el.title]
+          }</li>`
+        }
       })
 
       conclusion += "呢！"
     } else {
-      conclusion = "哇看起來妳有很多想做的事呢！"
+      conclusion = "哇看起來妳有很多想做的事呢！看來只好鴨分多路了"
+
+      elements.forEach((el) => {
+        wishesList += `<li style="margin-top: 5px">${Normal[el.title]}</li>`
+      })
+
+      wishesList += '<li style="margin-top: 5px">鴨鴨好忙</li>'
     }
 
     const context = `
@@ -234,6 +252,12 @@ class Field {
     }">${elements[3].score || ""}</div>
       </div>
       <p>${conclusion}</p>
+      <ul>
+        ${wishesList}
+      </ul>
+      <p>
+        壽星覺得怎麼樣呢！希望我們有幫到妳～
+      </p>
     `
 
     return [...outro, context]
