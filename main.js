@@ -80,6 +80,14 @@ const main = () => {
     currentOutroStep -= 1
     showContact(outro, currentOutroStep)
 
+    if (
+      currentOutroStep + 1 !== outro.length &&
+      !restart.classList.contains("hide")
+    ) {
+      restart.classList.add("hide")
+      next.classList.remove("hide")
+    }
+
     if (currentOutroStep < 1) {
       back.classList.add("hide")
       return
