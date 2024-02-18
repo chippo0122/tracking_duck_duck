@@ -182,7 +182,7 @@ class Duck {
 
     //隨機速度
     let speed = Math.floor(Math.random() * 2) + 1
-    this.speed = checkIsSafari() ? speed / 2 : speed
+    this.speed = checkIsSafari() ? speed : speed / 2
   }
 
   //抓起鴨鴨
