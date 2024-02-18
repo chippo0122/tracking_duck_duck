@@ -1,13 +1,46 @@
 @import './reset.scss';
-@import url('https://fonts.googleapis.com/css2?family=Rampart+One&family=Stick&family=DotGothic16&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Stick&family=DotGothic16&display=swap');
 
 body {
 	overflow: hidden;
   height: 100dvh;
 }
 
-#CANVAS {
-	background-color: #41996d
+.field {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #41996d;
+  z-index: -1;
+}
+
+.grass {
+  position: absolute;
+  width: 30px;
+  height: 15px;
+  background-color: rgba(0, 128, 0, 0.5);
+  clip-path: polygon(51% 59%, 81% 0, 72% 69%, 100% 0, 88% 100%, 50% 100%, 16% 100%, 0 0, 28% 65%, 32% 0);
+}
+
+.grass-1 {
+  top: 25%;
+  left: 20%;
+}
+.grass-2 {
+  top: 50%;
+  left: 75%;
+}
+
+.grass-3 {
+  top: 65%;
+  left: 25%;
+}
+
+.grass-4 {
+  top: 85%;
+  left: 80%;
 }
 
 .hide {

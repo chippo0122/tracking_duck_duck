@@ -225,7 +225,7 @@ class Duck {
     this.directionX = 0 - this.directionX
     this.directionY = 0 - this.directionY
 
-    this.speed = checkIsSafari() ? 4 : 2
+    this.speed = checkIsSafari() ? 2.5 : 2
   }
 }
 

@@ -197,7 +197,7 @@ class Field {
 
       conclusion += "呢！"
     } else {
-      conclusion = "哇看起來妳有很多想做的事呢！看來只好鴨分多路了"
+      conclusion = "哇看起來妳有很多想做的事呢！只好鴨分多路了"
 
       elements.forEach((el) => {
         wishesList += `<li style="margin-top: 10px; line-height: 1.5;">${
