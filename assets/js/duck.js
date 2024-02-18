@@ -1,4 +1,5 @@
 /** @format */
+import { checkIsSafari } from "./util"
 
 class Duck {
   constructor(point, id) {
@@ -180,8 +181,8 @@ class Duck {
     this.directionY = Math.sin(angle)
 
     //隨機速度
-    const speed = (Math.floor(Math.random() * 2) + 1) / 2
-    this.speed = speed
+    let speed = Math.floor(Math.random() * 2) + 1
+    this.speed = checkIsSafari() ? speed / 2 : speed
   }
 
   //抓起鴨鴨
@@ -224,7 +225,7 @@ class Duck {
     this.directionX = 0 - this.directionX
     this.directionY = 0 - this.directionY
 
-    this.speed = 2
+    this.speed = checkIsSafari() ? 4 : 2
   }
 }
 

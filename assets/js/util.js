@@ -6,4 +6,6 @@ const distance = (p1, p2) => {
   return Math.hypot(x, y)
 }
 
-export { distance }
+const checkIsSafari = () => navigator.userAgent.includes("Safari")
+
+export { distance, checkIsSafari }
