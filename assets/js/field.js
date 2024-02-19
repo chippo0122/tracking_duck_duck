@@ -201,7 +201,7 @@ class Field {
 
       elements.forEach((el) => {
         wishesList += `<li style="margin-top: 10px; line-height: 1.5;">${
-          el.score > 4
+          el.score >= 4
             ? `${el.title}方面鴨鴨用點力，${Specific[el.title]}`
             : Normal[el.title]
         }</li>`
