@@ -2,8 +2,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Stick&family=DotGothic16&display=swap');
 
 body {
-	overflow: hidden;
   height: 100dvh;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+body::-webkit-scrollbar-button {
+  display: none;
+}
+
+#CANVAS {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+}
+
+.scroll-prevent {
+  height: 10000px;
+  z-index: -2;
 }
 
 .field {
