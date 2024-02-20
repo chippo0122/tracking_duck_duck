@@ -118,7 +118,7 @@ const main = () => {
   CANVAS.width = body.offsetWidth
   CANVAS.height = body.offsetHeight
 
-  const field = new Field(CANVAS)
+  const field = new Field(CANVAS, window)
 
   const restartGame = () => {
     window.location.reload()

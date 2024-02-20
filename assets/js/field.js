@@ -6,7 +6,8 @@ import { distance } from "./util"
 import { Specific, Normal } from "../static/script"
 
 class Field {
-  constructor(canvas) {
+  constructor(canvas, preventScroll) {
+    this.preventScroll = preventScroll
     // datas
     this.canvas = canvas
     this.ctx = canvas.getContext("2d")
@@ -21,6 +22,14 @@ class Field {
     // control
     this.drag = false
     this.selected = null
+    this.dragDis = 5000
+    this.dragStart = 0
+    this.dragEnd = 0
+  }
+
+  setScroll(h) {
+    this.preventScroll.scroll(0, h)
+    console.log(this.dragDis)
   }
 
   start() {
@@ -28,6 +37,7 @@ class Field {
     this.isFinish = false
     this.generateField()
     this.#addEventListener()
+    this.setScroll(this.dragDis)
   }
 
   finish() {
@@ -274,6 +284,9 @@ class Field {
     this.drag = true
     const x = e.type === "touchstart" ? e.touches[0].clientX : e.offsetX
     const y = e.type === "touchstart" ? e.touches[0].clientY : e.offsetY
+
+    this.dragStart = y
+
     const current = new Point(x, y)
 
     let minDis = Number.MAX_SAFE_INTEGER
@@ -308,7 +321,7 @@ class Field {
     }
   }
 
-  #handlePressUp() {
+  #handlePressUp(e) {
     if (!this.isStart || this.isFinish) return
 
     if (this.selected) {
@@ -326,8 +339,22 @@ class Field {
       this.ducks.splice(selectedIndex, 1)
     }
 
+    this.dragEnd =
+      e.type === "touchend"
+        ? e.changedTouches[e.changedTouches.length - 1].pageX
+        : e.offsetY
+
     this.drag = false
     this.selected = null
+
+    let dis = this.dragEnd - this.dragStart
+
+    console.log(dis)
+
+    if (!this.dragDis + dis < 0 || !this.dragDis > 10000) {
+      this.dragDis += dis
+      this.setScroll(this.dragDis)
+    }
   }
 
   #addEventListener() {
