@@ -210,11 +210,13 @@ class Field {
       conclusion = "哇看起來妳有很多想做的事呢！只好鴨分多路了"
 
       elements.forEach((el) => {
-        wishesList += `<li style="margin-top: 10px; line-height: 1.5;">${
-          el.score >= 4
-            ? `${el.title}方面鴨鴨用點力，${Specific[el.title]}`
-            : Normal[el.title]
-        }</li>`
+        if (el.score !== 0) {
+          wishesList += `<li style="margin-top: 10px; line-height: 1.5;">${
+            el.score >= 4
+              ? `${el.title}方面鴨鴨用點力，${Specific[el.title]}`
+              : Normal[el.title]
+          }</li>`
+        }
       })
 
       wishesList +=
